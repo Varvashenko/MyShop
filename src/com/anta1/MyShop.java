@@ -20,6 +20,7 @@ public class MyShop {
         (new ShopWindow()).setVisible(true);
 //        JOptionPane.showMessageDialog(null, "Name of shop : \"" + shop_name + "\"", "Shop initializition.", JOptionPane.INFORMATION_MESSAGE);
     }
+
     private class ShopWindow extends JFrame {
         JButton btn_LoadProduct = new JButton("Заполнение магазина");
         JButton btn_AddProduct = new JButton("Добавить продукт");
@@ -33,45 +34,46 @@ public class MyShop {
 
         private void calcItogo() {
             Float sum = 0.0f;
-            for(Product bp : basketProduct) sum += bp.getPrice();
-            lb_itogo.setText( String.format("Сумма итого : %.2f грн",sum) );
+            for (Product bp : basketProduct) sum += bp.getPrice();
+            lb_itogo.setText(String.format("Сумма итого : %.2f грн", sum));
         }
 
-        ShopWindow () {
+        ShopWindow() {
             super(shop_name);
-            this.setSize(4*LEFTLIST+2*WIDTHLIST, 6*LEFTLIST+2*HEIGHTBUTTON+HEIGHTLIST);
+            this.setSize(4 * LEFTLIST + 2 * WIDTHLIST, 6 * LEFTLIST + 2 * HEIGHTBUTTON + HEIGHTLIST);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLayout(null);
             this.add(btn_LoadProduct);
-                btn_LoadProduct.setBounds(LEFTLIST, LEFTLIST, WIDTHLIST, HEIGHTBUTTON);
-                btn_LoadProduct.addActionListener(new btn_LoadProduct_ActionListener());
+            btn_LoadProduct.setBounds(LEFTLIST, LEFTLIST, WIDTHLIST, HEIGHTBUTTON);
+            btn_LoadProduct.addActionListener(new btn_LoadProduct_ActionListener());
             this.add(list_product);
-                list_product.setBounds(LEFTLIST, 2*LEFTLIST+HEIGHTBUTTON, WIDTHLIST, HEIGHTLIST);
-                list_product.setLayoutOrientation(JList.VERTICAL);
+            list_product.setBounds(LEFTLIST, 2 * LEFTLIST + HEIGHTBUTTON, WIDTHLIST, HEIGHTLIST);
+            list_product.setLayoutOrientation(JList.VERTICAL);
             this.add(btn_AddProduct);
-                btn_AddProduct.setBounds(2*LEFTLIST+WIDTHLIST, LEFTLIST, WIDTHLIST, HEIGHTBUTTON);
-                btn_AddProduct.addActionListener(new btn_AddProduct_ActionListener());
+            btn_AddProduct.setBounds(2 * LEFTLIST + WIDTHLIST, LEFTLIST, WIDTHLIST, HEIGHTBUTTON);
+            btn_AddProduct.addActionListener(new btn_AddProduct_ActionListener());
             this.add(btn_DelProduct);
-                btn_DelProduct.setBounds(2*LEFTLIST+WIDTHLIST, 3*LEFTLIST+HEIGHTBUTTON+HEIGHTLIST, WIDTHLIST, HEIGHTBUTTON);
-                btn_DelProduct.addActionListener(new btn_DelProduct_ActionListener());
+            btn_DelProduct.setBounds(2 * LEFTLIST + WIDTHLIST, 3 * LEFTLIST + HEIGHTBUTTON + HEIGHTLIST, WIDTHLIST, HEIGHTBUTTON);
+            btn_DelProduct.addActionListener(new btn_DelProduct_ActionListener());
             JScrollPane scrollPane = new JScrollPane(list_basket);
-                scrollPane.setBounds(2*LEFTLIST+WIDTHLIST, 2*LEFTLIST+HEIGHTBUTTON, WIDTHLIST, HEIGHTLIST);
-                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                this.add(scrollPane);
+            scrollPane.setBounds(2 * LEFTLIST + WIDTHLIST, 2 * LEFTLIST + HEIGHTBUTTON, WIDTHLIST, HEIGHTLIST);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            this.add(scrollPane);
             this.add(lb_itogo);
-                lb_itogo.setBounds(LEFTLIST, 3*LEFTLIST+HEIGHTBUTTON+HEIGHTLIST, WIDTHLIST, HEIGHTBUTTON);
+            lb_itogo.setBounds(LEFTLIST, 3 * LEFTLIST + HEIGHTBUTTON + HEIGHTLIST, WIDTHLIST, HEIGHTBUTTON);
         }
+
         class btn_LoadProduct_ActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(storeProduct.size() == 0) {
+                if (storeProduct.size() == 0) {
                     try {
                         loader.loaderProduct(storeProduct, "shop_fruits");
                     } catch (FileNotFoundException e) {
                         JOptionPane.showMessageDialog(null, "Ошбка загрузки.", shop_name, JOptionPane.WARNING_MESSAGE);
                     }
-                    for(Product p : storeProduct) {
-                        dlm_product.addElement( p.getName() );
+                    for (Product p : storeProduct) {
+                        dlm_product.addElement(p.getName());
                     }
                     JOptionPane.showMessageDialog(null, String.format("Магазин успешно загружен.\nДобавлено %d элементов.", storeProduct.size()), shop_name, JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -79,26 +81,28 @@ public class MyShop {
                 }
             }
         }
+
         class btn_AddProduct_ActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int i = list_product.getSelectedIndex();
-                if(i < 0) return;
+                if (i < 0) return;
                 Product pr = storeProduct.get(i);
-                String s = "Выбор продукта...\n#" + (i+1) + ". " + pr.getName();
+                String s = "Выбор продукта...\n#" + (i + 1) + ". " + pr.getName();
                 JOptionPane.showMessageDialog(null, s, shop_name, JOptionPane.INFORMATION_MESSAGE);
-                dlm_basket.addElement( pr.getName() + String.format("; %.2f грн",pr.getPrice()) );
-                basketProduct.add( pr );
+                dlm_basket.addElement(pr.getName() + String.format("; %.2f грн", pr.getPrice()));
+                basketProduct.add(pr);
                 calcItogo();
             }
         }
+
         class btn_DelProduct_ActionListener implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 int i = list_basket.getSelectedIndex();
-                if(i < 0) return;
+                if (i < 0) return;
                 Product pr = basketProduct.get(i);
-                String s = "Удалить продукт...\n" + (i+1) + ". " + pr.getName();
+                String s = "Удалить продукт...\n" + (i + 1) + ". " + pr.getName();
                 JOptionPane.showMessageDialog(null, s, shop_name, JOptionPane.INFORMATION_MESSAGE);
                 dlm_basket.remove(i);
                 basketProduct.remove(i);

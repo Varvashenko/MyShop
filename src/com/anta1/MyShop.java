@@ -88,7 +88,7 @@ public class MyShop {
                 int i = list_product.getSelectedIndex();
                 if (i < 0) return;
                 Product pr = storeProduct.get(i);
-                String s = "Выбор продукта...\n#" + (i + 1) + ". " + pr.getName();
+                String s = String.format("Выбор продукта...\n#%d. %s, Цена : %.2f грн", i+1, pr.getName(), pr.getPrice());
                 JOptionPane.showMessageDialog(null, s, shop_name, JOptionPane.INFORMATION_MESSAGE);
                 dlm_basket.addElement(pr.getName() + String.format("; %.2f грн", pr.getPrice()));
                 basketProduct.add(pr);
